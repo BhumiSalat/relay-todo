@@ -5,10 +5,10 @@
       "extensions": {
         "endpoints": {
           "dev": {
-            "url": "http://localhost:8081/graphql"
+            "url": "http://192.168.29.231:3000/graphql"
           },
           "prod": {
-            "url": "http://localhost:8081/graphql"
+            "url": "http://192.168.29.231:3000/graphql"
           }
         }
       }

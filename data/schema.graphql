@@ -1,0 +1,241 @@
+schema {
+  query: RootQuery
+  mutation: RootMutation
+}
+
+type RootQuery {
+  viewer: User
+  ApiKeys(
+    after: String
+    first: Int
+    before: String
+    last: Int
+    completed: Boolean
+  ): ApiKeyConnection
+  Jobs(
+    after: String
+    first: Int
+    before: String
+    last: Int
+    completed: Boolean
+  ): JobConnection
+}
+
+type User {
+  id: ID
+  name: String
+}
+
+# A connection to a list of items.
+type ApiKeyConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [ApiKeyEdge]
+}
+
+# Information about pagination in a connection.
+type PageInfo {
+  # When paginating forwards, are there more items?
+  hasNextPage: Boolean!
+
+  # When paginating backwards, are there more items?
+  hasPreviousPage: Boolean!
+
+  # When paginating backwards, the cursor to continue.
+  startCursor: String
+
+  # When paginating forwards, the cursor to continue.
+  endCursor: String
+}
+
+# An edge in a connection.
+type ApiKeyEdge {
+  # The item at the end of the edge
+  node: ApiKey
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+type ApiKey {
+  id: ID
+  apiKey: String
+}
+
+# A connection to a list of items.
+type JobConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [JobEdge]
+}
+
+# An edge in a connection.
+type JobEdge {
+  # The item at the end of the edge
+  node: Job
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+type Job {
+  id: ID
+  jobId: String
+  userId: String
+  jobStatus: String
+  jobCreatedAt: Float
+  jobStartedAt: Float
+  jobStoppedAt: Float
+  jobExecutionTime: Float
+}
+
+type RootMutation {
+  register(input: registerInput!): registerPayload
+  login(input: loginInput!): loginPayload
+  getUserPendingJob(input: getUserPendingJobInput!): getUserPendingJobPayload
+  CreateJob(input: jobCreateInput!): jobCreatePayload
+  getStatus(input: getStatusInput!): getStatusPayload
+  terminateJob(input: terminateJobInput!): terminateJobPayload
+  createApiKey(input: createApiKeyInput!): createApiKeyPayload
+  deleteApiKey(input: deleteApiKeyInput!): deleteApiKeyPayload
+  videoUpload(input: videoUploadInput!): videoUploadPayload
+  makepayment(input: makepaymentInput!): makepaymentPayload
+}
+
+input registerInput {
+  email: String!
+  password: String!
+  name: String!
+  clientMutationId: String
+}
+
+type registerPayload {
+  status: String
+  message: String
+  clientMutationId: String
+}
+
+input loginInput {
+  email: String!
+  password: String!
+  clientMutationId: String
+}
+
+type loginPayload {
+  status: String
+  message: String
+  token: String
+  clientMutationId: String
+}
+
+input getUserPendingJobInput {
+  clientMutationId: String
+}
+
+type getUserPendingJobPayload {
+  status: String
+  pendingJob: Int
+  clientMutationId: String
+}
+
+input jobCreateInput {
+  inputUrl: String!
+  outputBucket: String
+  outputPath: String
+  transcodeType: String!
+  resolutions: [String]
+  awsSecretAccesskey: String
+  awsAccesskey: String
+  inputType: String!
+  apiKey: String
+  clientMutationId: String
+}
+
+type jobCreatePayload {
+  status: String
+  message: String
+  jobId: String
+  url: String
+  clientMutationId: String
+}
+
+input getStatusInput {
+  jobId: String!
+  apiKey: String
+  clientMutationId: String
+}
+
+type getStatusPayload {
+  status: String
+  message: String
+  jobStatus: String
+  clientMutationId: String
+}
+
+input terminateJobInput {
+  jobId: String!
+  apiKey: String
+  clientMutationId: String
+}
+
+type terminateJobPayload {
+  status: String
+  message: String
+  jobStatus: String
+  clientMutationId: String
+}
+
+input createApiKeyInput {
+  clientMutationId: String
+}
+
+type createApiKeyPayload {
+  status: String
+  message: String
+  apikey: String
+  clientMutationId: String
+}
+
+input deleteApiKeyInput {
+  apiKey: String
+  clientMutationId: String
+}
+
+type deleteApiKeyPayload {
+  status: String
+  message: String
+  clientMutationId: String
+}
+
+input videoUploadInput {
+  videoId: String!
+  uploadStatus: String!
+  clientMutationId: String
+}
+
+type videoUploadPayload {
+  status: String
+  message: String
+  videoid: String
+  uploadingstatus: String
+  clientMutationId: String
+}
+
+input makepaymentInput {
+  transactionId: String!
+  transactionStatus: String!
+  amount: Float!
+  transactionDate: Int!
+  data: String!
+  clientMutationId: String
+}
+
+type makepaymentPayload {
+  status: String
+  message: String
+  clientMutationId: String
+}

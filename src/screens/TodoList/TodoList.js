@@ -1,10 +1,8 @@
 import React from "react";
-import graphql from "babel-plugin-relay/macro";
-import { useQuery } from "relay-hooks";
+import { useQuery, graphql } from "relay-hooks";
 
-//@connection(key: "FollowingFeedRefetchContainer_feed", filters: []) {
-export const HomeQuery = graphql`
-  query HomeQuery {
+export const TodoListQuery = graphql`
+  query TodoListQuery {
     todos(after: null, first: 2) {
       pageInfo {
         hasNextPage
@@ -22,14 +20,15 @@ export const HomeQuery = graphql`
   }
 `;
 
-const Home = (props) => {
+export default function TodoList() {
   const { props: queryProps, error } = useQuery(
-    HomeQuery,
+    TodoListQuery,
     {},
     {
       fetchPolicy: "network-only",
     }
   );
   return <div>{JSON.stringify({ queryProps, error })}</div>;
-};
-export default Home;
+  console.log(queryProps);
+  return <div></div>;
+}
